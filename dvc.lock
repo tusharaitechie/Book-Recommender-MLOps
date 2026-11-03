@@ -1,0 +1,121 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python -m books_recommender.pipeline.stage_pipeline --stage 
+      data_ingestion
+    deps:
+    - path: books_recommender/components/stage_00_data_ingestion.py
+      hash: md5
+      md5: 2a509c433cd1a65b0fb54950cbedebbb
+      size: 2507
+    - path: books_recommender/pipeline/stage_pipeline.py
+      hash: md5
+      md5: 164268c188bff282f827519fa28b59d9
+      size: 1242
+    - path: config/config.yaml
+      hash: md5
+      md5: 0e07d84259df87e85d05ab51ea705e78
+      size: 748
+    outs:
+    - path: artifacts/dataset/ingested_data
+      hash: md5
+      md5: b3e48a7291804f2b59c5ecdf7cf17000.dir
+      size: 119053852
+      nfiles: 3
+    - path: artifacts/dataset/raw_data
+      hash: md5
+      md5: 1a32672b899ebdc14a4111560e2e7d99.dir
+      size: 23736458
+      nfiles: 1
+  data_validation:
+    cmd: python -m books_recommender.pipeline.stage_pipeline --stage 
+      data_validation
+    deps:
+    - path: artifacts/dataset/ingested_data
+      hash: md5
+      md5: b3e48a7291804f2b59c5ecdf7cf17000.dir
+      size: 119053852
+      nfiles: 3
+    - path: books_recommender/components/stage_01_data_validation.py
+      hash: md5
+      md5: 918decdae00e36ef70c9a71cca249769
+      size: 3958
+    - path: books_recommender/pipeline/stage_pipeline.py
+      hash: md5
+      md5: 164268c188bff282f827519fa28b59d9
+      size: 1242
+    - path: config/config.yaml
+      hash: md5
+      md5: 0e07d84259df87e85d05ab51ea705e78
+      size: 748
+    outs:
+    - path: artifacts/dataset/clean_data
+      hash: md5
+      md5: ec1de38ec37c2eff249781bfb5e9bcb2.dir
+      size: 8613052
+      nfiles: 1
+    - path: artifacts/serialized_objects/final_rating.pkl
+      hash: md5
+      md5: bcfec35d38a023b99bbb6bb7ee755225
+      size: 3811283
+  data_transformation:
+    cmd: python -m books_recommender.pipeline.stage_pipeline --stage 
+      data_transformation
+    deps:
+    - path: artifacts/dataset/clean_data
+      hash: md5
+      md5: ec1de38ec37c2eff249781bfb5e9bcb2.dir
+      size: 8613052
+      nfiles: 1
+    - path: books_recommender/components/stage_02_data_transformation.py
+      hash: md5
+      md5: c0c8f54f1cf714943e21a4b216443c98
+      size: 2716
+    - path: books_recommender/pipeline/stage_pipeline.py
+      hash: md5
+      md5: 164268c188bff282f827519fa28b59d9
+      size: 1242
+    - path: config/config.yaml
+      hash: md5
+      md5: 0e07d84259df87e85d05ab51ea705e78
+      size: 748
+    outs:
+    - path: artifacts/dataset/transformed_data
+      hash: md5
+      md5: 3aec3bf43afd459aff4fc8cff47b35a9.dir
+      size: 5298896
+      nfiles: 1
+    - path: artifacts/serialized_objects/book_names.pkl
+      hash: md5
+      md5: d397152e9a649bd9c4312f0aad345c6a
+      size: 20131
+    - path: artifacts/serialized_objects/book_pivot.pkl
+      hash: md5
+      md5: 2a63b092bdca9775ae7d2cafd53a0377
+      size: 5298896
+  model_training:
+    cmd: python -m books_recommender.pipeline.stage_pipeline --stage 
+      model_training
+    deps:
+    - path: artifacts/dataset/transformed_data
+      hash: md5
+      md5: 3aec3bf43afd459aff4fc8cff47b35a9.dir
+      size: 5298896
+      nfiles: 1
+    - path: books_recommender/components/stage_03_model_trainer.py
+      hash: md5
+      md5: d612264c2fc8be58b52b08a58015bdbb
+      size: 3979
+    - path: books_recommender/pipeline/stage_pipeline.py
+      hash: md5
+      md5: 164268c188bff282f827519fa28b59d9
+      size: 1242
+    - path: config/config.yaml
+      hash: md5
+      md5: 0e07d84259df87e85d05ab51ea705e78
+      size: 748
+    outs:
+    - path: artifacts/trained_model/model.pkl
+      hash: md5
+      md5: db9028eabc589d04c16803f8c5c7a08c
+      size: 182971

@@ -1,0 +1,8 @@
+scikit-learn
+pandas
+numpy
+PyYAML
+streamlit
+six
+mlflow==3.17.2
+-e .

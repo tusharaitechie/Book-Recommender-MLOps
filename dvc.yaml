@@ -1,0 +1,45 @@
+
+stages:
+
+  data_ingestion:
+    cmd: python -m books_recommender.pipeline.stage_pipeline --stage data_ingestion
+    deps:
+      - books_recommender/pipeline/stage_pipeline.py
+      - books_recommender/components/stage_00_data_ingestion.py
+      - config/config.yaml
+    outs:
+      - artifacts/dataset/raw_data
+      - artifacts/dataset/ingested_data
+
+  data_validation:
+    cmd: python -m books_recommender.pipeline.stage_pipeline --stage data_validation
+    deps:
+      - books_recommender/pipeline/stage_pipeline.py
+      - books_recommender/components/stage_01_data_validation.py
+      - artifacts/dataset/ingested_data
+      - config/config.yaml
+    outs:
+      - artifacts/dataset/clean_data
+      - artifacts/serialized_objects/final_rating.pkl
+
+  data_transformation:
+    cmd: python -m books_recommender.pipeline.stage_pipeline --stage data_transformation
+    deps:
+      - books_recommender/pipeline/stage_pipeline.py
+      - books_recommender/components/stage_02_data_transformation.py
+      - artifacts/dataset/clean_data
+      - config/config.yaml
+    outs:
+      - artifacts/dataset/transformed_data
+      - artifacts/serialized_objects/book_names.pkl
+      - artifacts/serialized_objects/book_pivot.pkl
+
+  model_training:
+    cmd: python -m books_recommender.pipeline.stage_pipeline --stage model_training
+    deps:
+      - books_recommender/pipeline/stage_pipeline.py
+      - books_recommender/components/stage_03_model_trainer.py
+      - artifacts/dataset/transformed_data
+      - config/config.yaml
+    outs:
+      - artifacts/trained_model/model.pkl

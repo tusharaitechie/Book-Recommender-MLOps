@@ -1,6 +1,0 @@
-outs:
-- md5: ec1de38ec37c2eff249781bfb5e9bcb2.dir
-  size: 8613052
-  nfiles: 1
-  hash: md5
-  path: clean_data
