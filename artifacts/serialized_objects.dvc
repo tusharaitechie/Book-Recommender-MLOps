@@ -1,0 +1,6 @@
+outs:
+- md5: ff12a930bea728a8a12ac8fe13076802.dir
+  size: 9130310
+  nfiles: 3
+  hash: md5
+  path: serialized_objects
